@@ -1,7 +1,6 @@
 package ru.pogorelov.pages;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import ru.pogorelov.helpers.Assertions;
 
@@ -43,7 +42,7 @@ public class YandexSearch {
     @Step("Проверка выдаваемых значений условиям поиска по всем страницам")
     public YandexSearch checkingFilterProduct(List<String> manufacturersList) {
         ArrayList<String> titlesSearchList = (ArrayList<String>) addProductAllPage();
-        System.out.println("Count Iphones"+titlesSearchList.size());
+        System.out.println("Count Iphones "+titlesSearchList.size());
         for(String title:titlesSearchList){
             boolean productIsPresent = false;
             for (String manufacturer:manufacturersList){
@@ -64,21 +63,21 @@ public class YandexSearch {
 
         $x("//div[@data-auto='SerpStatic-loader']//div[contains(@class,'position_center')]//span[@role='progressbar']").should(hidden);
 
-        SelenideElement buttonShowMore = $x("//button[@data-auto = 'pager-more']/span");
         for(int i = 2; i<50;i++) {
-            if (!$x("//div[@data-current-page]/div").isDisplayed()) {
-                allPages = $$x("//div[@data-auto-themename='listDetailed']//h3[@data-auto='snippet-title']");
+            if (!$x("//div[@data-current-page]/div[@data-baobab-name]").isDisplayed()) {
                 break;
             } else {
-                buttonShowMore.scrollTo();
-                if (buttonShowMore.isDisplayed()) {
-                    buttonShowMore.click();
+                $x("//div[@data-current-page]/div[@data-baobab-name]//button").scrollIntoView(false);
+                if ($x("//div[@data-current-page]/div[@data-baobab-name]//button").isDisplayed()) {
+                    $x("//div[@data-current-page]/div[@data-baobab-name]//button/span").click();
                 }
+
                 $x("//div[@data-current-page]//span[@data-auto='spinner']").should(visible);
                 $x("//div[@data-current-page]//span[@data-auto='spinner']").should(hidden);
             }
         }
-        Assertions.assertTrue(allPages.isEmpty(),"Не удалось записать названия товаров в список");
+        allPages = $$x("//div[@data-auto-themename='listDetailed']//h3[@data-auto='snippet-title']");
+        Assertions.assertTrue(allPages.size()==0,"Не удалось записать названия товаров в список");
         return allPages.texts();
 
     }

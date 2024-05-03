@@ -22,20 +22,46 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
-
+/**
+ * @author  Погорелов Денис
+ * Класс отвечающий за переопределение класса AllureSelenide
+ * */
 public class CustomAllureSelenide extends AllureSelenide {
 
+    /**
+     * Переменная инициализации AllureSelenide
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(AllureSelenide.class);
+    /**
+     * Переменная отражающее создание скриншота
+     */
     private boolean saveScreenshots;
+    /**
+     * Переменная отражающая сохраннение HTML страницы
+     */
     private boolean savePageHtml;
+    /**
+     * Переменная отражающая шаги локаторов Selenide
+     */
     private boolean includeSelenideLocatorsSteps;
+    /**
+     * Сохраненине типов логов и их уровней
+     */
     private final Map<LogType, Level> logTypesToSave;
+    /**
+     *Переменная отвечающая за AllureLifecycle
+     */
     private final AllureLifecycle lifecycle;
 
+    /**
+     * Конструктов без аргументов
+     */
     public CustomAllureSelenide() {
         this(Allure.getLifecycle());
     }
-
+    /**
+     * Конструктов принимающий AllureLifecycle
+     */
     public CustomAllureSelenide(AllureLifecycle lifecycle) {
         this.saveScreenshots = true;
         this.savePageHtml = true;
@@ -44,6 +70,9 @@ public class CustomAllureSelenide extends AllureSelenide {
         this.lifecycle = lifecycle;
     }
 
+    /**
+     * Метод создания скриншота
+     */
     private static Optional<byte[]> getScreenshotBytes() {
         try {
             return WebDriverRunner.hasWebDriverStarted() ? Optional.of(((TakesScreenshot)WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES)) : Optional.empty();
@@ -52,7 +81,9 @@ public class CustomAllureSelenide extends AllureSelenide {
             return Optional.empty();
         }
     }
-
+    /**
+     * Метод сохранения страницы
+     */
     private static Optional<byte[]> getPageSourceBytes() {
         try {
             return WebDriverRunner.hasWebDriverStarted() ? Optional.of(WebDriverRunner.getWebDriver().getPageSource().getBytes(StandardCharsets.UTF_8)) : Optional.empty();
@@ -61,11 +92,15 @@ public class CustomAllureSelenide extends AllureSelenide {
             return Optional.empty();
         }
     }
-
+    /**
+     * Метод метод логаирования и сохранения уровней
+     */
     private static String getBrowserLogs(LogType logType, Level level) {
         return String.join("\n\n", Selenide.getWebDriverLogs(logType.toString(), level));
     }
-
+    /**
+     * Метод сохранения полученных данных
+     */
     @Override
     public void afterEvent(LogEvent event) {
         this.lifecycle.getCurrentTestCaseOrStep().ifPresent((parentUuid) -> {
@@ -114,7 +149,9 @@ public class CustomAllureSelenide extends AllureSelenide {
         }
 
     }
-
+    /**
+     * Метод регистрации шагов
+     */
     private boolean stepsShouldBeLogged(LogEvent event) {
         return this.includeSelenideLocatorsSteps || !(event instanceof SelenideLog);
     }

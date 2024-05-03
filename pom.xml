@@ -13,10 +13,12 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.jupiter.version>5.7.0-M1</junit.jupiter.version>
-        <seleniumhq.selenium>3.141.59</seleniumhq.selenium>
+        <selenide.version>6.19.1</selenide.version>
         <qameta.allure>2.13.6</qameta.allure>
         <aspectj.version>1.9.4</aspectj.version>
-        <allure.version>2.13.0</allure.version>
+        <allure.version>2.13.6</allure.version>
+        <owner.version>1.0.4</owner.version>
+        <commons-io.version>2.4</commons-io.version>
     </properties>
 
     <dependencies>
@@ -44,34 +46,34 @@
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
-            <version>2.13.6</version>
+            <version>${qameta.allure}</version>
         </dependency>
 
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-selenide</artifactId>
-            <version>2.13.6</version>
+            <version>${allure.version}</version>
         </dependency>
 
         <!--Для скринов-->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- Для пропертей -->
         <dependency>
             <groupId>org.aeonbits.owner</groupId>
             <artifactId>owner</artifactId>
-            <version>1.0.4</version>
+            <version>${owner.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.codeborne/selenide -->
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>6.19.1</version>
+            <version>${selenide.version}</version>
         </dependency>
     </dependencies>
 

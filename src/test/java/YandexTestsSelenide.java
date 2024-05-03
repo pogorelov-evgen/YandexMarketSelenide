@@ -1,11 +1,16 @@
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Feature;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.pogorelov.pages.YandexMain;
+import ru.pogorelov.selenide.CustomAllureSelenide;
+
+import java.util.List;
 
 import static com.codeborne.selenide.Selenide.*;
-import java.util.List;
 import static ru.pogorelov.helpers.Properties.properties;
 
 /**
@@ -13,6 +18,15 @@ import static ru.pogorelov.helpers.Properties.properties;
  * Класс отвечающий за тестирование
  * */
 public class YandexTestsSelenide {
+
+    /**
+     * Метод который бедут вызываться перед всеми тестовыми методами данного класса
+     */
+    @BeforeAll
+    public static void setup(){
+        SelenideLogger.addListener("AllureSelenide", new CustomAllureSelenide().screenshots(true).savePageSource(true));
+    }
+
     /**
      * метод тестирования Яндекс маркета
      * @param title переменной задаем название странице с которой сравниваем
@@ -29,8 +43,9 @@ public class YandexTestsSelenide {
                 .openCatalog()
                 .indicateChapter(chapter)
                 .openСhapter(product)
-                .validateChapter(title)
+                .validateChapter(product)
                 .selectManufacture(manufacturersList)
                 .checkingFilterProduct(manufacturersList);
     }
+
 }
